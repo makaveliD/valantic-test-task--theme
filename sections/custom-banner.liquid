@@ -1,25 +1,27 @@
 {{ 'section-custom-banner.css' | asset_url | stylesheet_tag }}
+
 {%- style -%}
 	.section-{{ section.id }}-padding {
-	padding-top: {{ section.settings.desktop_padding_top }}px;
-	padding-bottom: {{ section.settings.desktop_padding_bottom }}px;
+		padding-top: {{ section.settings.desktop_padding_top }}px;
+		padding-bottom: {{ section.settings.desktop_padding_bottom }}px;
 	}
 	#custom-banner-{{ section.id }} picture{
-	max-height:{{ section.settings.max_height }}px;
+		max-height:{{ section.settings.max_height }}px;
 	}
 	#custom-banner-{{ section.id }} img{
-	object-position: {{ section.settings.object_position }};
+		object-position: {{ section.settings.object_position }};
 	}
 	#custom-banner-{{ section.id }} .custom-banner--content{
-	align-items:{{ section.settings.content_position }};
+		align-items:{{ section.settings.content_position }};
 	}
 	@media screen and (max-width: 768px) {
-	.section-{{ section.id }}-padding {
-	padding-top: {{ section.settings.mobile_padding_top }}px;
-	padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
-	}
+		.section-{{ section.id }}-padding {
+			padding-top: {{ section.settings.mobile_padding_top }}px;
+			padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+		}
 	}
 {%- endstyle -%}
+
 <div class="custom-banner section-{{ section.id }}-padding" id="custom-banner-{{ section.id }}">
 	<picture>
 		<source srcset="{{ section.settings.mobile_image | img_url: '600x' }}" media="(max-width: 768px)">
@@ -40,6 +42,7 @@
 		{%- endfor -%}
 	</div>
 </div>
+
 {% schema %}
 {
   "name": "Custom Banner",

@@ -1,0 +1,224 @@
+{{ 'section-custom-banner.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+	.section-{{ section.id }}-padding {
+		padding-top: {{ section.settings.desktop_padding_top }}px;
+		padding-bottom: {{ section.settings.desktop_padding_bottom }}px;
+	}
+	#custom-banner-{{ section.id }} picture{
+		max-height:{{ section.settings.max_height }}px;
+	}
+	#custom-banner-{{ section.id }} img{
+		object-position: {{ section.settings.object_position }};
+	}
+	#custom-banner-{{ section.id }} .custom-banner--content{
+		align-items:{{ section.settings.content_position }};
+	}
+	@media screen and (max-width: 768px) {
+		.section-{{ section.id }}-padding {
+			padding-top: {{ section.settings.mobile_padding_top }}px;
+			padding-bottom: {{ section.settings.mobile_padding_bottom }}px;
+		}
+	}
+{%- endstyle -%}
+
+<div class="custom-banner section-{{ section.id }}-padding" id="custom-banner-{{ section.id }}">
+	<picture>
+		<source srcset="{{ section.settings.mobile_image | img_url: '600x' }}" media="(max-width: 768px)">
+		<source srcset="{{ section.settings.desktop_image | img_url: '1200x' }}" media="(min-width: 769px)">
+		<img src="{{ section.settings.desktop_image | img_url: '1200x' }}"
+			 alt="{{ section.settings.desktop_image.alt }}">
+	</picture>
+	<div class="custom-banner--content page-width">
+		{%- for block in section.blocks -%}
+			{%- case block.type -%}
+				{%- when 'title' -%}
+					<h2 style="color:{{ block.settings.color }};font-size: {{ block.settings.font_size }}px">{{ block.settings.text }}</h2>
+				{%- when 'button' -%}
+					<a href="{{ block.settings.url }}"
+					   class="custom-banner--btn"
+					   style="color:{{ block.settings.color }};background-color: {{ block.settings.bg_color }}">{{ block.settings.title }}</a>
+			{%- endcase -%}
+		{%- endfor -%}
+	</div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Banner",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 2,
+  "settings": [
+	{
+	  "type": "image_picker",
+	  "id": "desktop_image",
+	  "label": "Desktop image"
+	},
+	{
+	  "type": "image_picker",
+	  "id": "mobile_image",
+	  "label": "Mobile image"
+	},
+	{
+	  "type": "number",
+	  "id": "max_height",
+	  "label": "Maximum height of image",
+	  "default": 450
+	},
+	{
+	  "type": "select",
+	  "id": "content_position",
+	  "label": "Position of content",
+	  "default": "center",
+	  "options": [
+		{
+		  "value": "flex-start",
+		  "label": "Left"
+		},
+		{
+		  "value": "center",
+		  "label": "Center"
+		},
+		{
+		  "value": "flex-end",
+		  "label": "Right"
+		}
+	  ]
+	},
+	{
+	  "type": "select",
+	  "id": "object_position",
+	  "label": "Object Position",
+	  "default": "center",
+	  "options": [
+		{
+		  "value": "left",
+		  "label": "Left"
+		},
+		{
+		  "value": "center",
+		  "label": "Center"
+		},
+		{
+		  "value": "right",
+		  "label": "Right"
+		},
+		{
+		  "value": "top",
+		  "label": "Top"
+		},
+		{
+		  "value": "bottom",
+		  "label": "Bottom"
+		}
+	  ]
+	},
+	{
+	  "type": "range",
+	  "id": "desktop_padding_top",
+	  "label": "Desktop Padding Top",
+	  "min": 0,
+	  "max": 180,
+	  "step": 2,
+	  "default": 60,
+	  "unit": "px"
+	},
+	{
+	  "type": "range",
+	  "id": "desktop_padding_bottom",
+	  "label": "Desktop Padding Bottom",
+	  "min": 0,
+	  "max": 180,
+	  "step": 2,
+	  "default": 60,
+	  "unit": "px"
+	},
+	{
+	  "type": "range",
+	  "id": "mobile_padding_top",
+	  "label": "Mobile Padding Top",
+	  "min": 0,
+	  "max": 180,
+	  "step": 2,
+	  "default": 30,
+	  "unit": "px"
+	},
+	{
+	  "type": "range",
+	  "id": "mobile_padding_bottom",
+	  "label": "Mobile Padding Bottom",
+	  "min": 0,
+	  "max": 180,
+	  "step": 2,
+	  "default": 30,
+	  "unit": "px"
+	}
+  ],
+  "blocks": [
+	{
+	  "type": "title",
+	  "name": "Title",
+	  "settings": [
+		{
+		  "type": "inline_richtext",
+		  "id": "text",
+		  "label": "Text",
+		  "default": "Hello World!",
+		  "info": "Enter text and select needed style for it"
+		},
+		{
+		  "type": "range",
+		  "id": "font_size",
+		  "label": "Font Size",
+		  "min": 0,
+		  "max": 100,
+		  "step": 1,
+		  "default": 24,
+		  "unit": "px"
+		},
+		{
+		  "type": "color",
+		  "id": "color",
+		  "label": "Color",
+		  "default": "#000000"
+		}
+	  ]
+	},
+	{
+	  "type": "button",
+	  "name": "Button",
+	  "settings": [
+		{
+		  "type": "text",
+		  "id": "title",
+		  "label": "Title",
+		  "default": "Button Title"
+		},
+		{
+		  "type": "url",
+		  "id": "url",
+		  "label": "Url"
+		},
+		{
+		  "type": "color",
+		  "id": "color",
+		  "label": "Color",
+		  "default": "#000000"
+		},
+		{
+		  "type": "color",
+		  "id": "bg_color",
+		  "label": "Background Color",
+		  "default": "#FFFFFF"
+		}
+	  ]
+	}
+  ],
+  "presets": [
+	{
+	  "name": "Custom Banner"
+	}
+  ]
+}
+{% endschema %}
